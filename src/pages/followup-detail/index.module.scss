@@ -1,0 +1,152 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap { min-height: 100vh; padding: 0 $page-padding; padding-bottom: 160rpx; padding-top: $spacing-lg; }
+
+.patientBar {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  color: $color-text-white;
+  margin-bottom: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+
+  .avatar {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: $radius-round;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40rpx;
+    font-weight: $font-weight-bold;
+    flex-shrink: 0;
+  }
+
+  .info {
+    flex: 1;
+    .name { font-size: $font-size-lg; font-weight: $font-weight-bold; }
+    .sub { font-size: $font-size-xs; opacity: 0.85; margin-top: 4rpx; }
+  }
+}
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+
+  .cardTitle {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40rpx;
+
+  .tlItem {
+    position: relative;
+    padding: 0 0 $spacing-lg 0;
+    border-left: 2rpx solid $color-divider;
+    padding-left: 32rpx;
+    margin-left: 0;
+
+    &:last-child { border-left: none; }
+
+    .tlDot {
+      position: absolute;
+      left: -36rpx;
+      top: 0;
+      width: 24rpx;
+      height: 24rpx;
+      border-radius: $radius-round;
+      background: $color-primary;
+      border: 4rpx solid $color-bg-card;
+
+      &.done { background: $color-success; }
+      &.pending { background: $color-warning; }
+    }
+
+    .tlContent {
+      .tlDate {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+        margin-bottom: 8rpx;
+      }
+      .tlText {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+.planRow {
+  display: flex;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+  align-items: center;
+
+  &:last-child { border-bottom: none; }
+
+  .planLabel {
+    width: 160rpx;
+    font-size: $font-size-sm;
+    color: $color-text-tertiary;
+    flex-shrink: 0;
+  }
+
+  .planValue {
+    flex: 1;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    font-weight: $font-weight-medium;
+  }
+
+  .planTag {
+    padding: 6rpx 20rpx;
+    border-radius: $radius-button;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-medium;
+
+    &.high { background: rgba(239,68,68,0.1); color: $color-critical; }
+    &.mid { background: rgba(245,158,11,0.1); color: $color-warning; }
+    &.low { background: rgba(16,185,129,0.1); color: $color-success; }
+  }
+}
+
+.saveBar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding calc($spacing-md + env(safe-area-inset-bottom));
+  display: flex;
+  gap: $spacing-md;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  z-index: 100;
+
+  .btn {
+    flex: 1;
+    height: $button-height-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-button;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+
+    &.ghost { background: $color-bg-hover; color: $color-text-secondary; }
+    &.primary { background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%); color: $color-text-white; }
+  }
+}

@@ -1,0 +1,34 @@
+@use '@/styles/variables.scss' as *;
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md 0;
+  flex: 1;
+
+  .statValue {
+    font-size: $font-size-xxl;
+    font-weight: $font-weight-bold;
+    line-height: 1.2;
+    margin-bottom: 6rpx;
+
+    &.critical { color: $color-critical; }
+    &.warning { color: $color-warning-level; }
+    &.stable { color: $color-stable; }
+    &.primary { color: $color-primary; }
+    &.default { color: $color-text-primary; }
+  }
+
+  .statLabel {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  .statSub {
+    font-size: 20rpx;
+    color: $color-text-tertiary;
+    margin-top: 4rpx;
+  }
+}

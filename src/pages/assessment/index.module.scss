@@ -1,0 +1,245 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-top: $spacing-lg;
+  padding-bottom: 40rpx;
+}
+
+.overallCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  margin-bottom: $spacing-xl;
+  color: $color-text-white;
+  box-shadow: 0 12rpx 32rpx rgba(26, 115, 232, 0.3);
+
+  .cardTitle {
+    font-size: $font-size-sm;
+    opacity: 0.9;
+    margin-bottom: $spacing-md;
+  }
+
+  .summaryRow {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+  }
+
+  .riskCircle {
+    width: 180rpx;
+    height: 180rpx;
+    border-radius: $radius-round;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &.critical {
+      background: rgba(239, 68, 68, 0.35);
+      box-shadow: 0 0 40rpx rgba(239, 68, 68, 0.4);
+    }
+
+    &.warning {
+      background: rgba(245, 158, 11, 0.35);
+      box-shadow: 0 0 40rpx rgba(245, 158, 11, 0.4);
+    }
+
+    &.stable {
+      background: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 0 40rpx rgba(16, 185, 129, 0.4);
+    }
+
+    .riskScore {
+      font-size: 56rpx;
+      font-weight: $font-weight-bold;
+      line-height: 1;
+    }
+
+    .riskLabel {
+      font-size: $font-size-sm;
+      margin-top: 6rpx;
+      opacity: 0.95;
+    }
+  }
+
+  .riskTexts {
+    flex: 1;
+
+    .mainLevel {
+      font-size: 44rpx;
+      font-weight: $font-weight-bold;
+      margin-bottom: $spacing-sm;
+    }
+
+    .subText {
+      font-size: $font-size-sm;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+  }
+
+  .scoreCards {
+    display: flex;
+    gap: $spacing-sm;
+  }
+
+  .scoreItem {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: $radius-md;
+    padding: $spacing-md;
+    text-align: center;
+
+    .scoreName {
+      font-size: 20rpx;
+      opacity: 0.85;
+      margin-bottom: 6rpx;
+    }
+
+    .scoreValue {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+    }
+
+    .scoreLevel {
+      font-size: 20rpx;
+      margin-top: 4rpx;
+      opacity: 0.9;
+    }
+  }
+}
+
+.toolSection {
+  margin-bottom: $spacing-xl;
+}
+
+.toolGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+}
+
+.toolCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.97);
+    background: $color-bg-hover;
+  }
+
+  .toolIcon {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: $radius-lg;
+    background: $color-primary-soft;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40rpx;
+    margin-bottom: $spacing-md;
+
+    &.orange {
+      background: rgba(245, 158, 11, 0.12);
+    }
+
+    &.green {
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    &.red {
+      background: rgba(239, 68, 68, 0.12);
+    }
+  }
+
+  .toolName {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: 6rpx;
+  }
+
+  .toolDesc {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+    line-height: 1.5;
+  }
+}
+
+.historySection {
+  margin-bottom: $spacing-lg;
+}
+
+.historyList {
+  .historyItem {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-md;
+    box-shadow: $shadow-card;
+    transition: all $transition-base;
+
+    &:active {
+      transform: scale(0.99);
+    }
+
+    .itemHeader {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: $spacing-md;
+    }
+
+    .patientName {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+    }
+
+    .assessDate {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+    }
+
+    .riskInfo {
+      display: flex;
+      align-items: center;
+      gap: $spacing-lg;
+      margin-bottom: $spacing-md;
+    }
+
+    .infoRow {
+      display: flex;
+      gap: 16rpx;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  box-shadow: 0 8rpx 24rpx rgba(26, 115, 232, 0.3);
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.92;
+  }
+}

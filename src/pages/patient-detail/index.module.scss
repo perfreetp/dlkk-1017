@@ -1,0 +1,141 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap {
+  min-height: 100vh;
+  padding-bottom: 160rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  padding: $spacing-xl $page-padding;
+  color: $color-text-white;
+  position: relative;
+
+  .patientRow {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+
+    .avatar {
+      width: 140rpx;
+      height: 140rpx;
+      border-radius: $radius-round;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60rpx;
+      font-weight: $font-weight-bold;
+      flex-shrink: 0;
+    }
+
+    .info {
+      flex: 1;
+
+      .name {
+        font-size: $font-size-xxl;
+        font-weight: $font-weight-bold;
+        margin-bottom: 8rpx;
+      }
+
+      .meta {
+        font-size: $font-size-sm;
+        opacity: 0.9;
+        margin-bottom: 6rpx;
+      }
+    }
+  }
+
+  .tagsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12rpx;
+
+    .tagItem {
+      padding: 8rpx 20rpx;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: $radius-button;
+      font-size: $font-size-xs;
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
+.contentSection {
+  padding: 0 $page-padding;
+  margin-top: -32rpx;
+  position: relative;
+  z-index: 2;
+
+  .quickInfo {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-md;
+    box-shadow: $shadow-card;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-md;
+
+    .infoItem {
+      text-align: center;
+
+      .label {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+        margin-bottom: 6rpx;
+      }
+
+      .value {
+        font-size: $font-size-lg;
+        font-weight: $font-weight-semibold;
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.actionBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding calc($spacing-md + env(safe-area-inset-bottom));
+  display: flex;
+  gap: $spacing-md;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  z-index: 100;
+
+  .btn {
+    flex: 1;
+    height: $button-height-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-button;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-base;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &.outline {
+      background: $color-primary-soft;
+      color: $color-primary;
+    }
+
+    &.primary {
+      background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+      color: $color-text-white;
+    }
+
+    &.secondary {
+      background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+      color: $color-text-white;
+    }
+  }
+}

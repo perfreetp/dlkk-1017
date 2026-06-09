@@ -1,0 +1,205 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap { min-height: 100vh; padding: 0 $page-padding; padding-bottom: $spacing-xxl; padding-top: $spacing-lg; }
+
+.headerCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $color-text-white;
+  margin-bottom: $spacing-lg;
+  position: relative;
+  overflow: hidden;
+
+  .statRow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+    position: relative;
+    z-index: 1;
+
+    .statItem {
+      text-align: center;
+
+      .num {
+        font-size: 44rpx;
+        font-weight: $font-weight-bold;
+        display: block;
+        margin-bottom: 4rpx;
+      }
+
+      .label {
+        font-size: $font-size-xs;
+        opacity: 0.85;
+      }
+    }
+  }
+}
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+
+  .title {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+}
+
+.typeList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+
+  .typeItem {
+    border: 2rpx solid $color-divider;
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    transition: all $transition-base;
+    position: relative;
+
+    &.selected {
+      border-color: $color-primary;
+      background: $color-primary-soft;
+    }
+
+    .icon {
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: $radius-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40rpx;
+      margin-bottom: $spacing-sm;
+      background: $color-bg-hover;
+    }
+
+    &.selected .icon {
+      background: rgba(26,115,232,0.15);
+    }
+
+    .name {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      display: block;
+      margin-bottom: 4rpx;
+    }
+
+    .desc {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+    }
+
+    .check {
+      position: absolute;
+      top: $spacing-md;
+      right: $spacing-md;
+      width: 40rpx;
+      height: 40rpx;
+      border-radius: $radius-round;
+      background: $color-primary;
+      color: $color-text-white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24rpx;
+    }
+  }
+}
+
+.formatList {
+  .formatItem {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md 0;
+    border-bottom: 1rpx solid $color-divider;
+    gap: $spacing-md;
+
+    &:last-child { border-bottom: none; }
+
+    .radio {
+      width: 40rpx;
+      height: 40rpx;
+      border-radius: $radius-round;
+      border: 3rpx solid $color-divider;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      &.checked {
+        border-color: $color-primary;
+
+        &::after {
+          content: '';
+          width: 20rpx;
+          height: 20rpx;
+          border-radius: $radius-round;
+          background: $color-primary;
+        }
+      }
+    }
+
+    .fmtInfo {
+      flex: 1;
+
+      .fmtName {
+        font-size: $font-size-md;
+        color: $color-text-primary;
+        font-weight: $font-weight-medium;
+        display: block;
+        margin-bottom: 4rpx;
+      }
+
+      .fmtDesc {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+
+    .ext {
+      padding: 6rpx 16rpx;
+      background: $color-bg-hover;
+      border-radius: $radius-sm;
+      font-size: $font-size-xs;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+.btnBar {
+  margin-top: $spacing-lg;
+
+  .btn {
+    height: $button-height-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-button;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    margin-bottom: $spacing-md;
+
+    &.primary {
+      background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+      color: $color-text-white;
+      box-shadow: 0 8rpx 24rpx rgba(26,115,232,0.25);
+    }
+
+    &.ghost {
+      background: $color-bg-hover;
+      color: $color-text-secondary;
+    }
+  }
+}

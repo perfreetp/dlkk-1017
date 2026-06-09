@@ -1,0 +1,115 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap { min-height: 100vh; padding: 0 $page-padding; padding-bottom: 120rpx; padding-top: $spacing-lg; }
+
+.tabs {
+  display: flex;
+  background: $color-bg-hover;
+  border-radius: $radius-button;
+  padding: 6rpx;
+  margin-bottom: $spacing-md;
+  overflow-x: auto;
+
+  .tab {
+    flex: 1;
+    height: 72rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-button;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+    padding: 0 24rpx;
+    transition: all $transition-fast;
+
+    &.active {
+      background: $color-bg-card;
+      color: $color-primary;
+      box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+.tplCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+
+  .tplHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16rpx;
+
+    .tplName {
+      font-size: $font-size-md;
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      display: flex;
+      align-items: center;
+      gap: 12rpx;
+    }
+
+    .tplMeta {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+    }
+  }
+
+  .tplContent {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.7;
+    padding: $spacing-md;
+    background: $color-bg-hover;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-md;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .tplActions {
+    display: flex;
+    gap: $spacing-sm;
+
+    .actBtn {
+      flex: 1;
+      height: 64rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: $radius-button;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+
+      &.ghost { background: $color-bg-hover; color: $color-text-secondary; }
+      &.outline { background: $color-primary-soft; color: $color-primary; }
+    }
+  }
+}
+
+.fab {
+  position: fixed;
+  right: $page-padding;
+  bottom: 80rpx;
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  font-weight: $font-weight-light;
+  box-shadow: 0 12rpx 32rpx rgba(26, 115, 232, 0.35);
+  z-index: 100;
+
+  &:active { transform: scale(0.95); transition: all $transition-fast; }
+}

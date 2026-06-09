@@ -1,0 +1,237 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-top: $spacing-lg;
+  padding-bottom: 40rpx;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+}
+
+.actionCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+  position: relative;
+  overflow: hidden;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &.primary {
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+    color: $color-text-white;
+
+    .actionIcon, .actionTitle, .actionDesc {
+      color: $color-text-white;
+    }
+  }
+
+  &.secondary {
+    background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+    color: $color-text-white;
+
+    .actionIcon, .actionTitle, .actionDesc {
+      color: $color-text-white;
+    }
+  }
+}
+
+.actionIcon {
+  font-size: 56rpx;
+  margin-bottom: $spacing-sm;
+  line-height: 1;
+}
+
+.actionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 8rpx;
+  color: $color-text-primary;
+}
+
+.actionDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  line-height: 1.5;
+}
+
+.recentSection {
+  margin-bottom: $spacing-lg;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+
+  .sectionTitle {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+  }
+
+  .sectionMore {
+    font-size: $font-size-sm;
+    color: $color-primary;
+  }
+}
+
+.recordTimeline {
+  position: relative;
+  padding-left: $spacing-lg;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 14rpx;
+  top: 10rpx;
+  bottom: 10rpx;
+  width: 4rpx;
+  background: $color-border;
+  border-radius: 2rpx;
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: $spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .timelineDot {
+    position: absolute;
+    left: -34rpx;
+    top: 10rpx;
+    width: 32rpx;
+    height: 32rpx;
+    border-radius: $radius-round;
+    background: $color-bg-card;
+    border: 4rpx solid $color-primary;
+    z-index: 1;
+
+    &.typeExam {
+      border-color: $color-secondary;
+    }
+
+    &.typeRecord {
+      border-color: $color-warning-level;
+    }
+  }
+}
+
+.recordCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+
+  .recordHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-sm;
+  }
+
+  .recordType {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-primary;
+
+    &.exam { color: $color-secondary; }
+    &.record { color: $color-warning-level; }
+  }
+
+  .recordDate {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  .recordPatient {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: 6rpx;
+  }
+
+  .recordContent {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.6;
+    @include text-ellipsis-multi(2);
+  }
+
+  .recordTags {
+    margin-top: $spacing-sm;
+    display: flex;
+    gap: 12rpx;
+    flex-wrap: wrap;
+  }
+}
+
+.historySection {
+  .historyItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $color-bg-card;
+    border-radius: $radius-md;
+    padding: $spacing-md $spacing-lg;
+    margin-bottom: $spacing-sm;
+    box-shadow: $shadow-card;
+
+    &:active {
+      background: $color-bg-hover;
+    }
+
+    .patientInfo {
+      flex: 1;
+      min-width: 0;
+
+      .patientName {
+        font-size: $font-size-md;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin-bottom: 4rpx;
+      }
+
+      .lastTime {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+
+    .actionBtns {
+      display: flex;
+      gap: $spacing-sm;
+    }
+
+    .btnSmall {
+      padding: 12rpx 24rpx;
+      border-radius: $radius-button;
+      font-size: $font-size-xs;
+      font-weight: $font-weight-medium;
+
+      &.outline {
+        background: $color-primary-soft;
+        color: $color-primary;
+      }
+
+      &.solid {
+        background: $color-primary;
+        color: $color-text-white;
+      }
+    }
+  }
+}

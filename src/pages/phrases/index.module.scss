@@ -1,0 +1,99 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap { min-height: 100vh; padding: 0 $page-padding; padding-bottom: 120rpx; padding-top: $spacing-lg; }
+
+.groupCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+
+  .groupTitle {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    margin-bottom: $spacing-md;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .count {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+      font-weight: $font-weight-normal;
+      margin-left: auto;
+    }
+  }
+
+  .phraseList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16rpx;
+
+    .phraseChip {
+      padding: 16rpx 28rpx;
+      background: $color-bg-hover;
+      border-radius: $radius-button;
+      font-size: $font-size-sm;
+      color: $color-text-primary;
+      transition: all $transition-fast;
+      max-width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8rpx;
+
+      &:active {
+        background: $color-primary-soft;
+        color: $color-primary;
+        transform: scale(0.98);
+      }
+
+      .pin {
+        font-size: 20rpx;
+      }
+    }
+  }
+}
+
+.fab {
+  position: fixed;
+  right: $page-padding;
+  bottom: 80rpx;
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+  color: $color-text-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56rpx;
+  font-weight: $font-weight-light;
+  box-shadow: 0 12rpx 32rpx rgba(0, 191, 165, 0.35);
+  z-index: 100;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  padding: 16rpx $spacing-md;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  gap: $spacing-sm;
+
+  .icon { font-size: 32rpx; color: $color-text-tertiary; }
+  .input {
+    flex: 1;
+    font-size: $font-size-sm;
+    color: $color-text-primary;
+    background: transparent;
+    padding: 0;
+  }
+  .hint {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+}

@@ -1,0 +1,211 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap {
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.profileHeader {
+  position: relative;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 60%, $color-secondary 120%);
+  padding: $spacing-xl $page-padding $spacing-xxl;
+  color: $color-text-white;
+  border-radius: 0 0 40rpx 40rpx;
+  margin-bottom: -40rpx;
+
+  .doctorInfo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-lg;
+
+    .avatar {
+      width: 140rpx;
+      height: 140rpx;
+      border-radius: $radius-round;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60rpx;
+      font-weight: $font-weight-bold;
+      border: 4rpx solid rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+    }
+
+    .infoText {
+      flex: 1;
+      min-width: 0;
+
+      .name {
+        font-size: $font-size-xxl;
+        font-weight: $font-weight-bold;
+        margin-bottom: 8rpx;
+      }
+
+      .title {
+        font-size: $font-size-md;
+        opacity: 0.95;
+        margin-bottom: 6rpx;
+      }
+
+      .hospital {
+        font-size: $font-size-sm;
+        opacity: 0.85;
+      }
+    }
+  }
+
+  .quickStats {
+    display: flex;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: $radius-lg;
+    padding: $spacing-md 0;
+    border: 1rpx solid rgba(255, 255, 255, 0.2);
+
+    .statItem {
+      flex: 1;
+      text-align: center;
+      position: relative;
+
+      &:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1rpx;
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .statNum {
+        font-size: $font-size-xxl;
+        font-weight: $font-weight-bold;
+        margin-bottom: 4rpx;
+      }
+
+      .statLabel {
+        font-size: $font-size-xs;
+        opacity: 0.85;
+      }
+    }
+  }
+}
+
+.mainContent {
+  padding: 0 $page-padding;
+  position: relative;
+  z-index: 2;
+  padding-top: 80rpx;
+}
+
+.sectionCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-md;
+  box-shadow: $shadow-card;
+  overflow: hidden;
+
+  .sectionTitle {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-sm;
+    color: $color-text-tertiary;
+    font-weight: $font-weight-medium;
+    background: $color-bg-hover;
+  }
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    padding: $spacing-lg;
+    transition: background $transition-fast;
+
+    &:active {
+      background: $color-bg-hover;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1rpx solid $color-divider;
+    }
+
+    .menuIcon {
+      width: 72rpx;
+      height: 72rpx;
+      border-radius: $radius-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36rpx;
+      margin-right: $spacing-md;
+      flex-shrink: 0;
+
+      &.blue { background: $color-primary-soft; }
+      &.green { background: $color-secondary-soft; }
+      &.orange { background: rgba(245, 158, 11, 0.12); }
+      &.purple { background: rgba(139, 92, 246, 0.12); }
+      &.red { background: rgba(239, 68, 68, 0.12); }
+      &.gray { background: rgba(107, 114, 128, 0.12); }
+    }
+
+    .menuText {
+      flex: 1;
+      min-width: 0;
+
+      .menuName {
+        font-size: $font-size-md;
+        font-weight: $font-weight-medium;
+        color: $color-text-primary;
+        margin-bottom: 4rpx;
+      }
+
+      .menuDesc {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+      }
+    }
+
+    .menuArrow {
+      color: $color-text-tertiary;
+      font-size: $font-size-md;
+      margin-left: $spacing-sm;
+    }
+
+    .menuBadge {
+      padding: 4rpx 16rpx;
+      background: $color-error;
+      color: $color-text-white;
+      border-radius: $radius-round;
+      font-size: 20rpx;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+.logoutBtn {
+  margin-top: $spacing-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $button-height-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  color: $color-error;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+.versionInfo {
+  margin-top: $spacing-xl;
+  text-align: center;
+  font-size: $font-size-xs;
+  color: $color-text-disabled;
+}

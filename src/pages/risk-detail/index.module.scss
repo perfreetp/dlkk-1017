@@ -1,0 +1,195 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap { min-height: 100vh; padding: 0 $page-padding; padding-bottom: $spacing-xxl; padding-top: $spacing-lg; }
+
+.heroCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $color-text-white;
+  margin-bottom: $spacing-lg;
+  position: relative;
+  overflow: hidden;
+
+  .bgCircle {
+    position: absolute;
+    right: -60rpx;
+    top: -60rpx;
+    width: 300rpx;
+    height: 300rpx;
+    border-radius: $radius-round;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .scoreRow {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xl;
+    margin-bottom: $spacing-lg;
+    position: relative;
+    z-index: 1;
+
+    .scoreCircle {
+      width: 180rpx;
+      height: 180rpx;
+      border-radius: $radius-round;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+
+      .scoreVal {
+        font-size: 72rpx;
+        font-weight: $font-weight-bold;
+        line-height: 1;
+      }
+
+      .scoreLabel {
+        font-size: $font-size-xs;
+        opacity: 0.8;
+        position: absolute;
+        bottom: 28rpx;
+      }
+    }
+
+    .scoreInfo {
+      flex: 1;
+
+      .riskLabel {
+        display: inline-block;
+        padding: 8rpx 20rpx;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: $radius-button;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        margin-bottom: 12rpx;
+        backdrop-filter: blur(10px);
+      }
+
+      .desc {
+        font-size: $font-size-sm;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.scoreGroup {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+
+  .scoreCard {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    padding: $spacing-lg $spacing-sm;
+    box-shadow: $shadow-card;
+    text-align: center;
+
+    .scoreName {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+      margin-bottom: 12rpx;
+    }
+
+    .scoreNum {
+      font-size: 44rpx;
+      font-weight: $font-weight-bold;
+      margin-bottom: 6rpx;
+
+      &.critical { color: $color-critical; }
+      &.warning { color: $color-warning; }
+      &.normal { color: $color-success; }
+    }
+
+    .scoreLevel {
+      font-size: 22rpx;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+.factorList {
+  .factorItem {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+    padding: $spacing-md 0;
+    border-bottom: 1rpx solid $color-divider;
+
+    &:last-child { border-bottom: none; }
+
+    .factorIcon {
+      width: 56rpx;
+      height: 56rpx;
+      border-radius: $radius-round;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $font-size-lg;
+      flex-shrink: 0;
+
+      &.critical { background: rgba(239, 68, 68, 0.1); }
+      &.warning { background: rgba(245, 158, 11, 0.1); }
+      &.positive { background: rgba(16, 185, 129, 0.1); }
+    }
+
+    .factorContent {
+      flex: 1;
+
+      .factorTitle {
+        font-size: $font-size-sm;
+        color: $color-text-primary;
+        font-weight: $font-weight-medium;
+        margin-bottom: 6rpx;
+      }
+
+      .factorDesc {
+        font-size: $font-size-xs;
+        color: $color-text-tertiary;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+.adviceCard {
+  background: linear-gradient(135deg, rgba(0,191,165,0.08) 0%, rgba(26,115,232,0.08) 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-top: $spacing-lg;
+
+  .adviceTitle {
+    font-size: $font-size-md;
+    font-weight: $font-weight-semibold;
+    color: $color-primary;
+    margin-bottom: $spacing-md;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  .adviceItem {
+    padding: 12rpx 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.6;
+    padding-left: 32rpx;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 8rpx;
+      top: 22rpx;
+      width: 8rpx;
+      height: 8rpx;
+      border-radius: $radius-round;
+      background: $color-secondary;
+    }
+  }
+}

@@ -1,0 +1,286 @@
+@use '@/styles/variables.scss' as *;
+
+.pageWrap {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-top: $spacing-lg;
+  padding-bottom: 40rpx;
+}
+
+.summaryBar {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-xl;
+  box-shadow: $shadow-card;
+
+  .summaryItem {
+    flex: 1;
+    text-align: center;
+    padding: 0 $spacing-sm;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      height: 60%;
+      width: 1rpx;
+      background: $color-divider;
+    }
+
+    .sumValue {
+      font-size: $font-size-xxl;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+      margin-bottom: 4rpx;
+
+      &.pending { color: $color-warning-level; }
+      &.done { color: $color-stable; }
+      &.missed { color: $color-critical; }
+    }
+
+    .sumLabel {
+      font-size: $font-size-xs;
+      color: $color-text-tertiary;
+    }
+  }
+}
+
+.filterTabs {
+  display: flex;
+  margin-bottom: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  padding: 6rpx;
+  box-shadow: $shadow-card;
+
+  .tabBtn {
+    flex: 1;
+    height: 64rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-button;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    transition: all $transition-base;
+
+    &.active {
+      background: $color-primary;
+      color: $color-text-white;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+.followupList {
+  .followupItem {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-md;
+    box-shadow: $shadow-card;
+    transition: all $transition-base;
+
+    &:active {
+      transform: scale(0.99);
+    }
+
+    .itemTop {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: $spacing-md;
+
+      .dateBlock {
+        .dateMain {
+          font-size: $font-size-xl;
+          font-weight: $font-weight-semibold;
+          color: $color-text-primary;
+          line-height: 1.2;
+          margin-bottom: 4rpx;
+        }
+
+        .dateTime {
+          font-size: $font-size-xs;
+          color: $color-text-tertiary;
+        }
+      }
+
+      .statusBadge {
+        padding: 8rpx 20rpx;
+        border-radius: $radius-button;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+
+        &.pending {
+          background: rgba(245, 158, 11, 0.12);
+          color: $color-warning-level;
+        }
+
+        &.completed {
+          background: rgba(16, 185, 129, 0.12);
+          color: $color-stable;
+        }
+
+        &.missed {
+          background: rgba(239, 68, 68, 0.12);
+          color: $color-critical;
+        }
+      }
+    }
+
+    .patientRow {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      margin-bottom: $spacing-md;
+      padding-bottom: $spacing-md;
+      border-bottom: 1rpx solid $color-divider;
+
+      .avatar {
+        width: 72rpx;
+        height: 72rpx;
+        border-radius: $radius-round;
+        background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+        color: $color-text-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-lg;
+        flex-shrink: 0;
+      }
+
+      .pInfo {
+        flex: 1;
+        min-width: 0;
+
+        .pName {
+          font-size: $font-size-md;
+          font-weight: $font-weight-semibold;
+          color: $color-text-primary;
+          margin-bottom: 4rpx;
+        }
+
+        .pMeta {
+          font-size: $font-size-xs;
+          color: $color-text-tertiary;
+        }
+      }
+
+      .typeTag {
+        padding: 8rpx 16rpx;
+        background: $color-bg-section;
+        color: $color-primary;
+        border-radius: $radius-sm;
+        font-size: $font-size-xs;
+        flex-shrink: 0;
+      }
+    }
+
+    .notesRow {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+      line-height: 1.6;
+      margin-bottom: $spacing-md;
+      @include text-ellipsis-multi(2);
+    }
+
+    .feedbackRow {
+      background: $color-bg-section;
+      border-radius: $radius-sm;
+      padding: $spacing-sm $spacing-md;
+      margin-bottom: $spacing-md;
+
+      .fbLabel {
+        font-size: 20rpx;
+        color: $color-primary;
+        margin-bottom: 4rpx;
+      }
+
+      .fbContent {
+        font-size: $font-size-sm;
+        color: $color-text-secondary;
+        line-height: 1.5;
+      }
+    }
+
+    .actionRow {
+      display: flex;
+      gap: $spacing-sm;
+
+      .actionBtn {
+        flex: 1;
+        height: 64rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $radius-button;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        transition: all $transition-fast;
+
+        &:active {
+          transform: scale(0.96);
+        }
+
+        &.primary {
+          background: $color-primary;
+          color: $color-text-white;
+        }
+
+        &.outline {
+          background: $color-primary-soft;
+          color: $color-primary;
+        }
+
+        &.ghost {
+          background: $color-bg-hover;
+          color: $color-text-secondary;
+        }
+      }
+    }
+  }
+}
+
+.emptyWrap {
+  padding: 120rpx 0;
+  text-align: center;
+
+  .emptyIcon {
+    font-size: 120rpx;
+    margin-bottom: $spacing-md;
+    opacity: 0.5;
+  }
+
+  .emptyText {
+    font-size: $font-size-md;
+    color: $color-text-tertiary;
+  }
+}
+
+.fabBtn {
+  position: fixed;
+  right: $spacing-lg;
+  bottom: calc(140rpx + env(safe-area-inset-bottom));
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-white;
+  font-size: 48rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 191, 165, 0.35);
+  transition: all $transition-base;
+  z-index: 100;
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
