@@ -2,8 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import Taro, { useDidShow } from '@tarojs/taro';
 import classnames from 'classnames';
-import { mockFollowUps } from '../../data/followups';
-import { mockPatients } from '../../data/patients';
+import { usePatientStore } from '../../store/patientStore';
 import type { FollowUp } from '../../types';
 import styles from './index.module.scss';
 
@@ -26,52 +25,61 @@ const statusLabels: Record<FollowUp['status'], string> = {
 const FollowUpPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('all');
 
+  const patients = usePatientStore((s) => s.patients);
+  const getAllFollowUps = usePatientStore((s) => s.getAllFollowUps);
+  const updateFollowUpStatus = usePatientStore((s) => s.updateFollowUpStatus);
+
   useDidShow(() => {
-    console.log('[FollowUpPage] 页面显示');
+    console.log('[FollowUpPage] 页面显示 - 从store获取最新数据');
   });
 
   const patientMap = useMemo(() => {
     const map: Record<string, { name: string; age: number; gender: string }> = {};
-    mockPatients.forEach((p) => {
+    patients.forEach((p) => {
       map[p.id] = { name: p.name, age: p.age, gender: p.gender };
     });
     return map;
-  }, []);
+  }, [patients]);
+
+  const followUps = getAllFollowUps();
 
   const summary = useMemo(() => {
     return {
-      total: mockFollowUps.length,
-      pending: mockFollowUps.filter((f) => f.status === 'pending').length,
-      completed: mockFollowUps.filter((f) => f.status === 'completed').length,
-      missed: mockFollowUps.filter((f) => f.status === 'missed').length
+      total: followUps.length,
+      pending: followUps.filter((f) => f.status === 'pending').length,
+      completed: followUps.filter((f) => f.status === 'completed').length,
+      missed: followUps.filter((f) => f.status === 'missed').length
     };
-  }, []);
+  }, [followUps]);
 
   const filteredList = useMemo(() => {
-    let list = [...mockFollowUps];
+    let list = [...followUps];
     if (activeTab !== 'all') {
       list = list.filter((f) => f.status === activeTab);
     }
-    return list.sort((a, b) => {
-      if (a.status !== b.status) {
-        const order = { pending: 0, missed: 1, completed: 2, cancelled: 3 };
-        return order[a.status] - order[b.status];
-      }
-      return a.scheduleDate > b.scheduleDate ? 1 : -1;
-    });
-  }, [activeTab]);
+    return list;
+  }, [followUps, activeTab]);
 
   const handleAction = (action: string, item: FollowUp) => {
     console.log(`[FollowUpPage] ${action}:`, item.id);
     switch (action) {
       case 'complete':
-        Taro.showToast({ title: '已完成随访', icon: 'success' });
+        Taro.showModal({
+          title: '确认完成随访？',
+          content: '确认该患者本次随访已完成',
+          success: (res) => {
+            if (res.confirm) {
+              updateFollowUpStatus(item.id, 'completed');
+              Taro.showToast({ title: '状态已更新为已完成', icon: 'success' });
+            }
+          }
+        });
         break;
       case 'edit':
-        Taro.navigateTo({ url: `/pages/followup-detail/index?id=${item.id}` });
+        Taro.navigateTo({ url: `/pages/followup-detail/index?id=${item.id}&patientId=${item.patientId}` });
         break;
       case 'remind':
-        Taro.showToast({ title: '已发送提醒', icon: 'none' });
+        Taro.showToast({ title: '已发送微信随访提醒', icon: 'none' });
         break;
     }
   };
@@ -124,7 +132,7 @@ const FollowUpPage: React.FC = () => {
       {filteredList.length === 0 ? (
         <View className={styles.emptyWrap}>
           <Text className={styles.emptyIcon}>📋</Text>
-          <Text className={styles.emptyText}>暂无随访记录</Text>
+          <Text className={styles.emptyText}>暂无{{ all: '随访记录', pending: '待随访任务', completed: '已完成随访', missed: '逾期随访' }[activeTab]}</Text>
         </View>
       ) : (
         <View className={styles.followupList}>
@@ -135,7 +143,7 @@ const FollowUpPage: React.FC = () => {
                 key={item.id}
                 className={styles.followupItem}
                 onClick={() =>
-                  Taro.navigateTo({ url: `/pages/followup-detail/index?id=${item.id}` })
+                  Taro.navigateTo({ url: `/pages/followup-detail/index?id=${item.id}&patientId=${item.patientId}` })
                 }
               >
                 <View className={styles.itemTop}>
@@ -160,19 +168,21 @@ const FollowUpPage: React.FC = () => {
                       {patient?.age}岁
                     </Text>
                     <Text className={styles.pMeta}>
-                      {item.reminder ? '🔔 已设置提醒' : '未设置提醒'}
+                      {item.reminder ? '🔔' : '🔕'} {item.reminderDate ? `提醒日:${item.reminderDate}` : '未设置提醒'}
                     </Text>
                   </View>
                   <View className={styles.typeTag}>{typeLabels[item.type]}</View>
                 </View>
 
                 {item.notes && (
-                  <Text className={styles.notesRow}>📝 {item.notes}</Text>
+                  <Text className={styles.notesRow}>📝 备注：{item.notes}</Text>
                 )}
 
                 {item.feedback && (
                   <View className={styles.feedbackRow}>
-                    <Text className={styles.fbLabel}>上次随访反馈</Text>
+                    <Text className={styles.fbLabel}>
+                      {item.completedDate ? `${item.completedDate} 反馈` : '随访反馈'}
+                    </Text>
                     <Text className={styles.fbContent}>{item.feedback}</Text>
                   </View>
                 )}
