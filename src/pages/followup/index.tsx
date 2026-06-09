@@ -26,7 +26,7 @@ const FollowUpPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('all');
 
   const patients = usePatientStore((s) => s.patients);
-  const getAllFollowUps = usePatientStore((s) => s.getAllFollowUps);
+  const followUpsState = usePatientStore((s) => s.followUps);
   const updateFollowUpStatus = usePatientStore((s) => s.updateFollowUpStatus);
 
   useDidShow(() => {
@@ -41,7 +41,13 @@ const FollowUpPage: React.FC = () => {
     return map;
   }, [patients]);
 
-  const followUps = getAllFollowUps();
+  const followUps = useMemo(() => {
+    return [...followUpsState].sort((a, b) => {
+      const o = { pending: 0, missed: 1, completed: 2, cancelled: 3 } as const;
+      if (o[a.status] !== o[b.status]) return o[a.status] - o[b.status];
+      return a.scheduleDate < b.scheduleDate ? -1 : 1;
+    });
+  }, [followUpsState]);
 
   const summary = useMemo(() => {
     return {

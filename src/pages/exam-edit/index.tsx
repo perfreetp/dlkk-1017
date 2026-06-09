@@ -127,16 +127,21 @@ const ExamEditPage: React.FC = () => {
       weight: weight ? parseFloat(weight) : undefined as any
     } as any;
 
+    // 完全没有有效值时不传vitalSigns，避免后续合并污染
+    const hasVital = [vitalSignsData.bpSystolic, vitalSignsData.bpDiastolic, vitalSignsData.heartRate,
+      vitalSignsData.temperature, vitalSignsData.respiratoryRate, vitalSignsData.spo2, vitalSignsData.weight]
+      .some(v => v !== undefined && v !== null && v !== '' && v !== 0);
+
     const payload = {
       patientId: patient!.id,
-      vitalSigns: vitalSignsData,
+      vitalSigns: hasVital ? vitalSignsData : undefined,
       labTests,
       ecg: (ecgConclusion || ecgRhythm || ecgRate) ? {
-        rhythm: ecgRhythm || '窦性心律',
-        heartRate: ecgRate ? parseInt(ecgRate) : 75,
+        rhythm: ecgRhythm || undefined,
+        heartRate: ecgRate ? parseInt(ecgRate) : undefined,
         prInterval: undefined as any,
         qrsDuration: undefined as any,
-        conclusion: ecgConclusion || '待解读',
+        conclusion: ecgConclusion || undefined,
         description: ecgDetails || undefined
       } as any : undefined,
       echo: (echoSummary || echoLVEF || echoLVDD) ? {

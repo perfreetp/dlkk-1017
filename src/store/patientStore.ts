@@ -62,6 +62,7 @@ interface PatientState {
   ) => ExamResult;
 
   getRiskAssessmentsByPatientId: (pid: string) => RiskAssessment[];
+  getRiskAssessmentByPatientId: (pid: string) => RiskAssessment | undefined;
   getDoctorAdviceByPatientId: (pid: string) => DoctorAdvice | undefined;
 
   getAllFollowUps: () => FollowUp[];
@@ -314,6 +315,10 @@ const buildStore = (): PatientState => ({
       .sort((a, b) => (a.assessmentDate < b.assessmentDate ? 1 : -1));
   },
 
+  getRiskAssessmentByPatientId: function (this: PatientState, pid) {
+    return this.getRiskAssessmentsByPatientId(pid)[0];
+  },
+
   getDoctorAdviceByPatientId: function (this: PatientState, pid) {
     return this.doctorAdvices.find((a) => a.patientId === pid);
   },
@@ -515,6 +520,7 @@ export const usePatientStore = create<PatientState>()(
       r.getLatestExamByPatientId = (pid: string) => r.getExamResultsByPatientId(pid)[0];
       r.getRiskAssessmentsByPatientId = (pid: string) =>
         [...get().riskAssessments].filter((a: RiskAssessment) => a.patientId === pid).sort((a: any, b: any) => a.assessmentDate < b.assessmentDate ? 1 : -1);
+      r.getRiskAssessmentByPatientId = (pid: string) => r.getRiskAssessmentsByPatientId(pid)[0];
       r.getDoctorAdviceByPatientId = (pid: string) => get().doctorAdvices.find((a: DoctorAdvice) => a.patientId === pid);
       r.getAllFollowUps = () =>
         [...get().followUps].sort((a: any, b: any) => {
