@@ -24,13 +24,9 @@ const RecordsPage: React.FC = () => {
   });
 
   const getPatientById = usePatientStore((s) => s.getPatientById);
-  const getPatients = usePatientStore((s) => s.getPatients);
-  const getAllFirstVisitRecords = usePatientStore((s) => s.getAllFirstVisitRecords);
-  const getAllExamResults = usePatientStore((s) => s.getAllExamResults);
-
-  const patients = useMemo(() => getPatients(), [getPatients]);
-  const allRecords = useMemo(() => getAllFirstVisitRecords(), [getAllFirstVisitRecords]);
-  const allExams = useMemo(() => getAllExamResults(), [getAllExamResults]);
+  const patients = usePatientStore((s) => s.patients);
+  const allRecords = usePatientStore((s) => s.firstVisitRecords);
+  const allExams = usePatientStore((s) => s.examResults);
 
   console.log('[RecordsPage] store数据: 患者=', patients.length, '首诊=', allRecords.length, '检查=', allExams.length);
 
@@ -45,9 +41,10 @@ const RecordsPage: React.FC = () => {
     const list: TimelineItem[] = [];
 
     allRecords.forEach((r) => {
-      const tags = [...(r.medicalHistory || [])];
+      const history = r.pastHistory?.length ? r.pastHistory : (r.medicalHistory || []);
+      const tags = [...history];
       if (r.medications?.length > 0) tags.push(`用药${r.medications.length}种`);
-      if (r.allergies && r.allergies !== '无过敏史') tags.push('过敏史');
+      if (Array.isArray(r.allergies) && r.allergies.length > 0) tags.push('过敏史');
       list.push({
         id: r.id,
         type: 'record',
@@ -64,8 +61,10 @@ const RecordsPage: React.FC = () => {
     allExams.forEach((e) => {
       const tags: string[] = [];
       if (e.vitalSigns) {
-        tags.push(`BP${e.vitalSigns.bpSystolic}/${e.vitalSigns.bpDiastolic}`);
-        tags.push(`HR${e.vitalSigns.heartRate}`);
+        const sbp = e.vitalSigns.bpSystolic || e.vitalSigns.systolicBP;
+        const dbp = e.vitalSigns.bpDiastolic || e.vitalSigns.diastolicBP;
+        if (sbp && dbp) tags.push(`BP${sbp}/${dbp}`);
+        if (e.vitalSigns.heartRate) tags.push(`HR${e.vitalSigns.heartRate}`);
       }
       if (e.labTests?.length) tags.push(`化验${e.labTests.length}项`);
       if (e.ecg) tags.push('心电图');
@@ -239,7 +238,7 @@ const RecordsPage: React.FC = () => {
                       <Text className={styles.recordPatient}>{item.patientName}</Text>
                       {p?.riskLevel && p.riskLevel !== 'normal' && (
                         <TagBadge type={p.riskLevel} showDot size="sm">
-                          {p.riskLevel === 'critical' ? '急重症' : p.riskLevel === 'high' ? '高危' : '中危'}
+                          {p.riskLevel === 'critical' ? '急重症' : p.riskLevel === 'warning' ? '高危' : '中危'}
                         </TagBadge>
                       )}
                       {p?.bedNo && (

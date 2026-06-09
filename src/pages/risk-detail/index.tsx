@@ -273,10 +273,10 @@ const RiskDetailPage: React.FC = () => {
                       <Text style={{ fontSize: '22rpx', color: '#86909C' }}>{er.reason}</Text>
                     </View>
                     <TagBadge
-                      type={er.urgency === 'emergent' ? 'critical' : er.urgency === 'urgent' ? 'warning' : 'normal'}
+                      type={(er.urgency && er.urgency === 'emergent') ? 'critical' : (er.urgency === 'urgent' ? 'warning' : 'normal')}
                       size="sm"
                     >
-                      {urgencyMap[er.urgency]}
+                      {urgencyMap[er.urgency as keyof typeof urgencyMap] || '常规'}
                     </TagBadge>
                   </View>
                 ))}

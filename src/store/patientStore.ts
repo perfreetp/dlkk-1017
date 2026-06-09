@@ -40,7 +40,14 @@ interface PatientState {
   getPatientById: (id: string) => Patient | undefined;
 
   getFirstVisitRecordsByPatientId: (pid: string) => FirstVisitRecord[];
-  addFirstVisitRecord: (record: Omit<FirstVisitRecord, 'id' | 'visitDate' | 'doctor'> & { symptoms: string; presentIllness: string; pastHistory: string[]; medications: MedicationItem[]; allergies: string[] }) => FirstVisitRecord;
+  addFirstVisitRecord: (record: Omit<FirstVisitRecord, 'id' | 'visitDate' | 'doctor'> & {
+    symptoms: string;
+    presentIllness: string;
+    pastHistory?: string[];
+    medicalHistory?: string[];
+    medications: MedicationItem[];
+    allergies?: string | string[];
+  }) => FirstVisitRecord;
 
   getExamResultsByPatientId: (pid: string) => ExamResult[];
   getLatestExamByPatientId: (pid: string) => ExamResult | undefined;
@@ -157,19 +164,34 @@ export const usePatientStore = create<PatientState>((set, get) => ({
       .sort((a, b) => (a.visitDate < b.visitDate ? 1 : -1)),
 
   addFirstVisitRecord: (record) => {
+    const historyArr = record.pastHistory && record.pastHistory.length > 0
+      ? record.pastHistory
+      : (record.medicalHistory && record.medicalHistory.length > 0 ? record.medicalHistory : []);
+
+    let allergiesArr: string[] = [];
+    if (Array.isArray(record.allergies)) {
+      allergiesArr = record.allergies;
+    } else if (typeof record.allergies === 'string' && record.allergies.trim()) {
+      allergiesArr = record.allergies
+        .split(/[,、，\n]/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    }
+
     const newRecord: FirstVisitRecord = {
       id: genId('FV'),
       patientId: record.patientId || '',
       visitDate: todayStr(),
       doctor: '李医生',
       department: '心内科',
-      familyHistory: [],
-      personalHistory: '',
+      familyHistory: record.familyHistory || [],
+      personalHistory: record.personalHistory || '',
       symptoms: record.symptoms,
       presentIllness: record.presentIllness,
-      pastHistory: record.pastHistory,
-      medications: record.medications,
-      allergies: record.allergies
+      pastHistory: historyArr,
+      medicalHistory: historyArr,
+      medications: record.medications || [],
+      allergies: allergiesArr
     };
     set((state) => ({
       firstVisitRecords: [newRecord, ...state.firstVisitRecords]
@@ -187,19 +209,61 @@ export const usePatientStore = create<PatientState>((set, get) => ({
   addExamResult: (pid, data) => {
     const prev = get().getLatestExamByPatientId(pid);
 
+    const normVitals = data.vitalSigns ? (() => {
+      const s = data.vitalSigns as any;
+      return {
+        systolicBP: s.bpSystolic || s.systolicBP,
+        diastolicBP: s.bpDiastolic || s.diastolicBP,
+        heartRate: s.heartRate,
+        respiratoryRate: s.respiratoryRate,
+        temperature: s.temperature || s.temperatureC,
+        oxygenSaturation: s.spo2 || s.oxygenSaturation,
+        bpSystolic: s.bpSystolic || s.systolicBP,
+        bpDiastolic: s.bpDiastolic || s.diastolicBP,
+        spo2: s.spo2 || s.oxygenSaturation,
+        temperatureC: s.temperature || s.temperatureC
+      };
+    })() : ({} as any);
+
     const mergedVitals = {
       ...(prev?.vitalSigns || {
         systolicBP: 130,
         diastolicBP: 80,
         heartRate: 75,
+        bpSystolic: 130,
+        bpDiastolic: 80,
         measureTime: new Date().toISOString().slice(0, 16)
       }),
       ...(data.vitalSigns && Object.fromEntries(
-        Object.entries(data.vitalSigns).filter(([, v]) => v !== undefined && v !== null && v !== '' && v !== 0)
+        Object.entries(normVitals).filter(([, v]) => v !== undefined && v !== null && v !== '' && v !== 0)
       ))
     } as ExamResult['vitalSigns'];
 
-    const mergedEcg = data.ecg?.conclusion?.trim() ? data.ecg : prev?.ecg;
+    const normEcg = data.ecg ? (() => {
+      const e = data.ecg as any;
+      return {
+        type: e.ecgType || e.type || '12导联心电图',
+        ecgType: e.ecgType || e.type || '12导联心电图',
+        conclusion: e.conclusion || '',
+        heartRate: e.heartRate || 75,
+        rhythm: e.rhythm || '窦性心律',
+        remark: e.description || e.remark || '',
+        description: e.description || e.remark || ''
+      };
+    })() : undefined;
+
+    const mergedEcg = normEcg?.conclusion?.trim() ? normEcg : prev?.ecg;
+
+    const normLabs: LabTestItem[] = (data.labTests || []).map((l: any) => ({
+      name: l.name,
+      value: l.value,
+      unit: l.unit,
+      referenceRange: l.refRange || l.referenceRange || '',
+      refRange: l.refRange || l.referenceRange || '',
+      isAbnormal: l.abnormal !== undefined ? l.abnormal : (l.isAbnormal || false),
+      abnormal: l.abnormal !== undefined ? l.abnormal : (l.isAbnormal || false),
+      trend: l.trend || 'normal'
+    }));
 
     const newResult: ExamResult = {
       id: genId('EX'),
@@ -211,7 +275,7 @@ export const usePatientStore = create<PatientState>((set, get) => ({
         measureTime: new Date().toISOString().slice(0, 16)
       },
       ecg: mergedEcg,
-      labTests: (data.labTests && data.labTests.length > 0) ? data.labTests : prev?.labTests,
+      labTests: normLabs.length > 0 ? normLabs : prev?.labTests,
       imaging: prev?.imaging
     };
 

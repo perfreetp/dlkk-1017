@@ -33,6 +33,10 @@ export interface VitalSigns {
   temperature?: number;
   oxygenSaturation?: number;
   measureTime: string;
+  bpSystolic?: number;
+  bpDiastolic?: number;
+  spo2?: number;
+  temperatureC?: number;
 }
 
 export interface FirstVisitRecord {
@@ -42,6 +46,7 @@ export interface FirstVisitRecord {
   symptoms: string;
   presentIllness: string;
   pastHistory: string[];
+  medicalHistory?: string[];
   familyHistory: string[];
   medications: MedicationItem[];
   allergies: string[];
@@ -69,6 +74,8 @@ export interface ExamResult {
     heartRate: number;
     rhythm: string;
     remark?: string;
+    description?: string;
+    ecgType?: string;
   };
   labTests?: LabTestItem[];
   imaging?: ImagingItem[];
@@ -80,7 +87,9 @@ export interface LabTestItem {
   value: string;
   unit: string;
   referenceRange: string;
+  refRange?: string;
   isAbnormal: boolean;
+  abnormal?: boolean;
   trend?: 'up' | 'down' | 'normal';
 }
 

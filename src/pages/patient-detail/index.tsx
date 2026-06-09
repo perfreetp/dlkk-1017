@@ -118,9 +118,9 @@ const PatientDetailPage: React.FC = () => {
           <View className={styles.infoItem}>
             <Text className={styles.label}>🩸 血压</Text>
             <Text className={styles.value} style={{
-              color: latestExam?.vitalSigns?.bpSystolic && latestExam.vitalSigns.bpSystolic > 140 ? '#F53F3F' : '#1D2129'
+              color: (latestExam?.vitalSigns?.bpSystolic || latestExam?.vitalSigns?.systolicBP) && ((latestExam?.vitalSigns?.bpSystolic || latestExam?.vitalSigns?.systolicBP) as number) > 140 ? '#F53F3F' : '#1D2129'
             }}>
-              {latestExam?.vitalSigns ? `${latestExam.vitalSigns.bpSystolic || '-'}/${latestExam.vitalSigns.bpDiastolic || '-'}` : '-/-'}
+              {latestExam?.vitalSigns ? `${latestExam.vitalSigns.bpSystolic || latestExam.vitalSigns.systolicBP || '-'}/${latestExam.vitalSigns.bpDiastolic || latestExam.vitalSigns.diastolicBP || '-'}` : '-/-'}
             </Text>
             <Text className={{
               ...styles.label,
@@ -154,8 +154,8 @@ const PatientDetailPage: React.FC = () => {
           <View className={styles.infoItem}>
             <Text className={styles.label}>📊 风险</Text>
             <Text className={styles.value} style={{
-              color: riskAssess?.overallRisk === 'high' ? '#F53F3F'
-                : riskAssess?.overallRisk === 'medium' ? '#F7BA1E' : '#10B981'
+              color: riskAssess?.overallRisk === 'critical' ? '#F53F3F'
+                : riskAssess?.overallRisk === 'warning' ? '#F7BA1E' : '#10B981'
             }}>
               {riskAssess?.score || '-'}
             </Text>
@@ -250,22 +250,22 @@ const PatientDetailPage: React.FC = () => {
                     📜 既往病史
                   </Text>
                   <Text style={{ fontSize: '24rpx', color: '#1D2129', lineHeight: 1.5 }}>
-                    {(latestFV.medicalHistory && latestFV.medicalHistory.length > 0)
-                      ? latestFV.medicalHistory.join('、')
-                      : '无特殊病史'}
+                    {((latestFV.pastHistory && latestFV.pastHistory.length > 0)
+                      ? latestFV.pastHistory
+                      : (latestFV.medicalHistory && latestFV.medicalHistory.length > 0 ? latestFV.medicalHistory : [])).join('、') || '无特殊病史'}
                   </Text>
                 </View>
                 <View style={{
                   padding: '16rpx 20rpx',
-                  background: latestFV.allergies && latestFV.allergies !== '无过敏史'
+                  background: Array.isArray(latestFV.allergies) && latestFV.allergies.length > 0
                     ? 'rgba(245,63,63,0.06)' : '#F7F8FA',
                   borderRadius: '10rpx',
-                  borderLeft: latestFV.allergies && latestFV.allergies !== '无过敏史'
+                  borderLeft: Array.isArray(latestFV.allergies) && latestFV.allergies.length > 0
                     ? '4rpx solid #F53F3F' : '4rpx solid transparent'
                 }}>
                   <Text style={{
                     fontSize: '22rpx',
-                    color: latestFV.allergies && latestFV.allergies !== '无过敏史' ? '#F53F3F' : '#86909C',
+                    color: Array.isArray(latestFV.allergies) && latestFV.allergies.length > 0 ? '#F53F3F' : '#86909C',
                     marginBottom: '8rpx',
                     display: 'block',
                     fontWeight: 500
@@ -277,7 +277,9 @@ const PatientDetailPage: React.FC = () => {
                     color: '#1D2129',
                     lineHeight: 1.5
                   }}>
-                    {latestFV.allergies || '无过敏史'}
+                    {(Array.isArray(latestFV.allergies) && latestFV.allergies.length > 0)
+                      ? latestFV.allergies.join('、')
+                      : (typeof latestFV.allergies === 'string' ? latestFV.allergies : '无过敏史')}
                   </Text>
                 </View>
               </View>
@@ -394,18 +396,18 @@ const PatientDetailPage: React.FC = () => {
                   <View style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '16rpx' }}>
                     <View style={{
                       padding: '16rpx 20rpx',
-                      background: latestExam.vitalSigns.bpSystolic > 140 ? 'rgba(245,63,63,0.06)' : '#F7F8FA',
+                      background: ((latestExam.vitalSigns.bpSystolic || latestExam.vitalSigns.systolicBP) as number) > 140 ? 'rgba(245,63,63,0.06)' : '#F7F8FA',
                       borderRadius: '10rpx'
                     }}>
                       <Text style={{ fontSize: '22rpx', color: '#86909C' }}>血压(BP)</Text>
                       <Text style={{
                         fontSize: '32rpx',
                         fontWeight: 700,
-                        color: latestExam.vitalSigns.bpSystolic > 140 ? '#F53F3F' : '#1D2129',
+                        color: ((latestExam.vitalSigns.bpSystolic || latestExam.vitalSigns.systolicBP) as number) > 140 ? '#F53F3F' : '#1D2129',
                         marginTop: '6rpx',
                         display: 'block'
                       }}>
-                        {latestExam.vitalSigns.bpSystolic}/{latestExam.vitalSigns.bpDiastolic}
+                        {latestExam.vitalSigns.bpSystolic || latestExam.vitalSigns.systolicBP}/{latestExam.vitalSigns.bpDiastolic || latestExam.vitalSigns.diastolicBP}
                         <Text style={{ fontSize: '20rpx', color: '#86909C', fontWeight: 400 }}> mmHg</Text>
                       </Text>
                     </View>
@@ -434,11 +436,11 @@ const PatientDetailPage: React.FC = () => {
                         </Text>
                       </View>
                     )}
-                    {latestExam.vitalSigns.spo2 && (
+                    {(latestExam.vitalSigns.spo2 || latestExam.vitalSigns.oxygenSaturation) && (
                       <View style={{ padding: '16rpx 20rpx', background: '#F7F8FA', borderRadius: '10rpx' }}>
                         <Text style={{ fontSize: '22rpx', color: '#86909C' }}>SpO₂</Text>
                         <Text style={{ fontSize: '28rpx', fontWeight: 600, color: '#10B981', marginTop: '6rpx', display: 'block' }}>
-                          {latestExam.vitalSigns.spo2}%
+                          {latestExam.vitalSigns.spo2 || latestExam.vitalSigns.oxygenSaturation}%
                         </Text>
                       </View>
                     )}
@@ -502,7 +504,7 @@ const PatientDetailPage: React.FC = () => {
                           {t.value} <Text style={{ fontSize: '20rpx', color: '#86909C', fontWeight: 400 }}>{t.unit}</Text>
                         </Text>
                         <Text style={{ fontSize: '20rpx', color: '#F53F3F', background: 'rgba(245,63,63,0.1)', padding: '4rpx 10rpx', borderRadius: '8rpx' }}>
-                          参考 {t.refRange}
+                          参考 {t.refRange || t.referenceRange}
                         </Text>
                       </View>
                     </View>
