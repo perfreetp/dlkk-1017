@@ -143,6 +143,7 @@ export interface ExamRecommendation {
   examType: string;
   reason: string;
   urgency: 'routine' | 'urgent' | 'emergent';
+  frequency?: 'daily' | 'everyOtherDay' | 'weekly' | 'monthly' | 'once' | string;
 }
 
 export interface FollowUp {

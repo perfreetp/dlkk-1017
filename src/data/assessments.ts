@@ -111,10 +111,10 @@ export const mockDoctorAdvices: DoctorAdvice[] = [
       { medication: '贝那普利+二甲双胍', status: 'warning', message: '可能增加肾功能损伤风险，定期监测肌酐' }
     ],
     examRecommendations: [
-      { examType: '床旁心电图', reason: '每日动态监测ST-T变化', urgency: 'daily' },
-      { examType: '心肌酶谱+BNP', reason: '评估心梗后恢复及心功能', urgency: 'qod' },
-      { examType: '超声心动图', reason: '评估LVEF及室壁运动', urgency: 'routine' },
-      { examType: '便隐血', reason: 'DAPT治疗期间出血监测', urgency: 'weekly' }
+      { examType: '床旁心电图', reason: '每日动态监测ST-T变化', urgency: 'urgent', frequency: 'daily' },
+      { examType: '心肌酶谱+BNP', reason: '评估心梗后恢复及心功能', urgency: 'routine', frequency: 'everyOtherDay' },
+      { examType: '超声心动图', reason: '评估LVEF及室壁运动', urgency: 'routine', frequency: 'once' },
+      { examType: '便隐血', reason: 'DAPT治疗期间出血监测', urgency: 'routine', frequency: 'weekly' }
     ],
     contraindications: [
       '绝对禁忌：禁用NSAIDs类解热镇痛药（与DAPT冲突）',

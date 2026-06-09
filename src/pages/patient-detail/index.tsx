@@ -31,7 +31,7 @@ const PatientDetailPage: React.FC = () => {
   const getDoctorAdviceByPatientId = usePatientStore((s) => s.getDoctorAdviceByPatientId);
   const getFollowUpsByPatientId = usePatientStore((s) => s.getFollowUpsByPatientId);
 
-  const patient = useMemo(() => getPatientById(patientId) || getPatientById('P001'), [patientId, getPatientById]);
+  const patient = useMemo(() => getPatientById(patientId), [patientId, getPatientById]);
   const firstVisits = useMemo(() => getFirstVisitRecordsByPatientId(patientId), [patientId, getFirstVisitRecordsByPatientId]);
   const latestExam = useMemo(() => getLatestExamByPatientId(patientId), [patientId, getLatestExamByPatientId]);
   const allExams = useMemo(() => getExamResultsByPatientId(patientId), [patientId, getExamResultsByPatientId]);
@@ -57,7 +57,7 @@ const PatientDetailPage: React.FC = () => {
       <View className={styles.header} style={{
         background: patient.riskLevel === 'critical'
           ? 'linear-gradient(135deg,#7F1D1D 0%,#FCA5A5 100%)'
-          : patient.riskLevel === 'high'
+          : patient.riskLevel === 'warning'
             ? 'linear-gradient(135deg,#1A73E8 0%,#93C5FD 100%)'
             : 'linear-gradient(135deg,#0F766E 0%,#5EEAD4 100%)'
       }}>
@@ -78,7 +78,7 @@ const PatientDetailPage: React.FC = () => {
             </Text>
           </View>
           <TagBadge
-            type={patient.riskLevel === 'critical' ? 'critical' : patient.riskLevel === 'high' ? 'warning' : 'normal'}
+            type={patient.riskLevel === 'critical' ? 'critical' : patient.riskLevel === 'warning' ? 'warning' : 'normal'}
             showDot size="lg"
             style={{ background: 'rgba(255,255,255,0.95)' }}
           >
@@ -599,21 +599,21 @@ const PatientDetailPage: React.FC = () => {
           <SectionCard
             title="📊 风险评估"
             extra={
-              <TagBadge type={riskAssess.overallRisk === 'high' ? 'critical' : riskAssess.overallRisk === 'medium' ? 'warning' : 'normal'} showDot>
+              <TagBadge type={riskAssess.overallRisk === 'critical' ? 'critical' : riskAssess.overallRisk === 'warning' ? 'warning' : 'normal'} showDot>
                 {getRiskLevelText(riskAssess.overallRisk)} · {riskAssess.score}分
               </TagBadge>
             }
             onClick={() => Taro.navigateTo({ url: `/pages/risk-detail/index?patientId=${patient.id}&id=${riskAssess.id}` })}
           >
             <Text style={{ fontSize: '26rpx', color: '#4E5969', lineHeight: 1.7, display: 'block', marginBottom: '12rpx' }}>
-              <Text style={{ color: riskAssess.overallRisk === 'high' ? '#F53F3F' : '#1D2129', fontWeight: 500 }}>
+              <Text style={{ color: riskAssess.overallRisk === 'critical' ? '#F53F3F' : '#1D2129', fontWeight: 500 }}>
                 {riskAssess.model}风险分层：{getRiskLevelText(riskAssess.overallRisk)}
               </Text>
             </Text>
             {riskAssess.warnings && riskAssess.warnings.length > 0 && (
               <View style={{ display: 'flex', flexWrap: 'wrap', gap: '10rpx' }}>
                 {riskAssess.warnings.slice(0, 4).map((w, i) => (
-                  <TagBadge key={i} type={riskAssess.overallRisk === 'high' ? 'critical' : 'warning'} size="sm">
+                  <TagBadge key={i} type={riskAssess.overallRisk === 'critical' ? 'critical' : 'warning'} size="sm">
                     ⚠ {w}
                   </TagBadge>
                 ))}
@@ -678,14 +678,14 @@ const PatientDetailPage: React.FC = () => {
                 </View>
               </View>
             )}
-            {doctorAdvice.checks && doctorAdvice.checks.length > 0 && (
+            {doctorAdvice.examRecommendations && doctorAdvice.examRecommendations.length > 0 && (
               <View>
                 <Text style={{ fontSize: '22rpx', color: '#86909C', marginBottom: '12rpx', display: 'block' }}>
                   🧪 推荐检查
                 </Text>
                 <View style={{ display: 'flex', flexWrap: 'wrap', gap: '10rpx' }}>
-                  {doctorAdvice.checks.slice(0, 5).map((c, i) => (
-                    <TagBadge key={i} type="default" size="sm">{c}</TagBadge>
+                  {doctorAdvice.examRecommendations.slice(0, 5).map((c, i) => (
+                    <TagBadge key={i} type="default" size="sm">{c.examType}</TagBadge>
                   ))}
                 </View>
               </View>
@@ -709,7 +709,32 @@ const PatientDetailPage: React.FC = () => {
               </View>
             )}
           </SectionCard>
-        ) : null}
+        ) : (
+          <SectionCard
+            title="💊 医嘱建议"
+            extra={<Text style={{ fontSize: '24rpx', color: '#1A73E8' }}>风险详情 ›</Text>}
+            onClick={() => Taro.navigateTo({ url: '/pages/assessment/index' })}
+          >
+            <View style={{
+              padding: '24rpx',
+              background: '#F7F8FA',
+              borderRadius: '12rpx',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16rpx'
+            }}>
+              <Text style={{ fontSize: '48rpx' }}>📝</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: '26rpx', fontWeight: 500, color: '#1D2129', display: 'block', marginBottom: '4rpx' }}>
+                  暂未生成医嘱建议
+                </Text>
+                <Text style={{ fontSize: '22rpx', color: '#86909C' }}>
+                  完成风险评估后将自动生成用药核对、检查推荐与禁忌提醒
+                </Text>
+              </View>
+            </View>
+          </SectionCard>
+        )}
 
         {/* 随访计划 */}
         <SectionCard

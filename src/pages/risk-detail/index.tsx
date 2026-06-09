@@ -41,6 +41,15 @@ const RiskDetailPage: React.FC = () => {
   ];
 
   const urgencyMap = { routine: '常规', urgent: '紧急', emergent: '立即' } as const;
+  const frequencyMap: Record<string, string> = {
+    daily: '每日',
+    everyOtherDay: '隔日',
+    weekly: '每周',
+    monthly: '每月',
+    once: '一次',
+    qod: '隔日',
+    qw: '每周'
+  };
 
   if (!assessment) {
     return (
@@ -264,7 +273,8 @@ const RiskDetailPage: React.FC = () => {
                     border: '1rpx solid rgba(0,191,165,0.1)',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    gap: '16rpx'
                   }}>
                     <View style={{ flex: 1 }}>
                       <Text style={{ fontSize: '28rpx', fontWeight: 500, color: '#1D2129', display: 'block' }}>
@@ -272,12 +282,28 @@ const RiskDetailPage: React.FC = () => {
                       </Text>
                       <Text style={{ fontSize: '22rpx', color: '#86909C' }}>{er.reason}</Text>
                     </View>
-                    <TagBadge
-                      type={(er.urgency && er.urgency === 'emergent') ? 'critical' : (er.urgency === 'urgent' ? 'warning' : 'normal')}
-                      size="sm"
-                    >
-                      {urgencyMap[er.urgency as keyof typeof urgencyMap] || '常规'}
-                    </TagBadge>
+                    <View style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6rpx' }}>
+                      <TagBadge
+                        type={(er.urgency && er.urgency === 'emergent') ? 'critical' : (er.urgency === 'urgent' ? 'warning' : 'normal')}
+                        size="sm"
+                      >
+                        {urgencyMap[er.urgency as keyof typeof urgencyMap] || '常规'}
+                      </TagBadge>
+                      {er.frequency && (
+                        <View style={{
+                          padding: '2rpx 10rpx',
+                          borderRadius: '8rpx',
+                          fontSize: '18rpx',
+                          background: 'rgba(26,115,232,0.08)',
+                          color: '#1A73E8',
+                          fontWeight: 500
+                        }}>
+                          <Text style={{ fontSize: '18rpx', color: '#1A73E8' }}>
+                            {frequencyMap[er.frequency] || er.frequency}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
                 ))}
               </View>
